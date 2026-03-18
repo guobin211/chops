@@ -6,6 +6,11 @@ options:
   createIntermediateGroups: true
   generateEmptyDirectories: true
 
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.6.0"
+
 targets:
   Chops:
     type: application
@@ -15,6 +20,8 @@ targets:
         excludes:
           - "*.entitlements"
           - Info.plist
+    dependencies:
+      - package: Sparkle
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.joshpigford.Chops
