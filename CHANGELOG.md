@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-03-25
+
+- Add skills to collections via right-click context menu
+- Drag and drop skills into sidebar collections
+- Detect skills from Claude Desktop and CLI plugins
+- Faster skill preview loading (eliminated ~2s delay)
+
 ## [1.7.0] - 2026-03-24
 
 - Rich markdown theme in skill preview
