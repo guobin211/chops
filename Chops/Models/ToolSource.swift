@@ -3,9 +3,11 @@ import SwiftUI
 enum ToolSource: String, Codable, CaseIterable, Identifiable {
     case agents
     case claude
+    case claudeInternal
     case cursor
     case windsurf
     case codex
+    case codexInternal
     case copilot
     case aider
     case amp
@@ -21,9 +23,11 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
     var displayName: String {
         switch self {
         case .claude: "Claude Code"
+        case .claudeInternal: "Claude Internal"
         case .cursor: "Cursor"
         case .windsurf: "Windsurf"
         case .codex: "Codex"
+        case .codexInternal: "Codex Internal"
         case .copilot: "Copilot"
         case .aider: "Aider"
         case .amp: "Amp"
@@ -41,9 +45,11 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
     var iconName: String {
         switch self {
         case .claude: "brain.head.profile"
+        case .claudeInternal: "brain.head.profile"
         case .cursor: "cursorarrow.rays"
         case .windsurf: "wind"
         case .codex: "book.closed"
+        case .codexInternal: "book.closed"
         case .copilot: "airplane"
         case .aider: "wrench.and.screwdriver"
         case .amp: "bolt.fill"
@@ -61,8 +67,10 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
     var logoAssetName: String? {
         switch self {
         case .claude: "tool-claude"
+        case .claudeInternal: "tool-claude"
         case .cursor: "tool-cursor"
         case .codex: "tool-codex"
+        case .codexInternal: "tool-codex"
         case .windsurf: "tool-windsurf"
         case .copilot: "tool-copilot"
         case .amp: "tool-amp"
@@ -76,9 +84,11 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
     var color: Color {
         switch self {
         case .claude: .orange
+        case .claudeInternal: .brown
         case .cursor: .blue
         case .windsurf: .teal
         case .codex: .green
+        case .codexInternal: .mint
         case .copilot: .purple
         case .aider: .yellow
         case .amp: .pink
@@ -96,8 +106,10 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
         switch self {
         case .claude: return ["\(home)/.claude/agents"]
+        case .claudeInternal: return ["\(home)/.claude-internal/agents"]
         case .cursor: return ["\(home)/.cursor/agents"]
         case .codex: return ["\(home)/.codex/agents"]
+        case .codexInternal: return ["\(home)/.codex-internal/agents"]
         default: return []
         }
     }
@@ -112,9 +124,11 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
         }()
         switch self {
         case .claude: return ["\(home)/.claude/skills"]
+        case .claudeInternal: return ["\(home)/.claude-internal/skills"]
         case .cursor: return ["\(home)/.cursor/skills", "\(home)/.cursor/rules"]
         case .windsurf: return ["\(home)/.codeium/windsurf/memories", "\(home)/.windsurf/rules"]
         case .codex: return ["\(home)/.codex/skills"]
+        case .codexInternal: return ["\(home)/.codex-internal/skills"]
         case .copilot: return ["\(home)/.copilot/skills"]
         case .aider: return []
         case .amp: return ["\(configHome)/amp/skills"]
@@ -141,6 +155,10 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
                 || fm.fileExists(atPath: "\(home)/.claude/CLAUDE.md")
                 || fm.fileExists(atPath: "\(home)/.claude/plugins/installed_plugins.json")
                 || Self.cliBinaryExists("claude")
+        case .claudeInternal:
+            return fm.fileExists(atPath: "\(home)/.claude-internal/settings.json")
+                || fm.fileExists(atPath: "\(home)/.claude-internal/CLAUDE.md")
+                || Self.cliBinaryExists("claude-internal")
         case .cursor:
             return fm.fileExists(atPath: "/Applications/Cursor.app")
                 || fm.fileExists(atPath: "\(home)/.cursor/argv.json")
@@ -151,6 +169,10 @@ enum ToolSource: String, Codable, CaseIterable, Identifiable {
             return fm.fileExists(atPath: "\(home)/.codex/config.toml")
                 || fm.fileExists(atPath: "\(home)/.codex/auth.json")
                 || Self.cliBinaryExists("codex")
+        case .codexInternal:
+            return fm.fileExists(atPath: "\(home)/.codex-internal/config.toml")
+                || fm.fileExists(atPath: "\(home)/.codex-internal/auth.json")
+                || Self.cliBinaryExists("codex-internal")
         case .amp:
             let configHome = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"]
                 .flatMap { $0.isEmpty ? nil : $0 } ?? "\(home)/.config"
